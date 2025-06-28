@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import passport from 'passport';
 dotenv.config();
 
 export const config = {
@@ -16,8 +17,14 @@ export const config = {
     expiresIn: '7d', 
   },
 
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackUrl: process.env.GOOGLE_CALLBACK_URL
+  },
+
   cors: {
     developmentMode: process.env.FRONTEND_URL || "http://localhost:3000",
-    deploymentMode: process.env.FRONTEND_URL || "http://localhost:3000",
+    deploymentMode: process.env.FRONTEND_URL_NET || "http://localhost:3000",
   }
 };

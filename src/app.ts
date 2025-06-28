@@ -7,9 +7,15 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import fileRouter from './interfaces/routes/fileRoutes';
 import { config } from "@/src/config";
+import './infrastructure/auth/passport';
+import passport from 'passport';
+import session from 'express-session';
 
 const  app = express();
 app.use(express.json())
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 setupSwagger(app);
 const corsOptions = {
@@ -26,8 +32,8 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use('/auth', authRoutes);
-app.use('/users', userRoutes);
-app.use('/upload', fileRouter);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/upload', fileRouter);
 
 export default app

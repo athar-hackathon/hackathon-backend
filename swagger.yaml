@@ -3,7 +3,7 @@ info:
   title: User API
   version: 1.0.0
 paths:
-  /auth/login:
+  /api/auth/login:
     post:
       summary: Login user
       tags:
@@ -30,12 +30,14 @@ paths:
                     schema:
                       type: object
                       properties:
-                        token:
+                        email:
+                          type: string
+                        message:
                           type: string
               '401':
                 description: Invalid credentials
 
-  /users:
+  /api/users:
     post:
       summary: Register new user
       tags:
@@ -70,7 +72,7 @@ paths:
           description: Server error
 
 
-  /upload:
+  /api/upload:
     post:
       summary: Upload an image file
       description: Uploads an image (jpg, png, etc.) with file validation and size limit (2MB).
@@ -117,3 +119,37 @@ paths:
                     type: string
                     example: Only image files are allowed!
 
+  /api/auth/google:
+    get:
+      tags:
+        - Auth
+      summary: Start Google OAuth Login/Register
+      description: Redirects the user to Google's OAuth 2.0 consent screen.
+      responses:
+        '302':
+          description: Redirects to Google OAuth login page.
+
+  /api/auth/google/callback:
+    get:
+      tags:
+        - Auth
+      summary: Google OAuth Callback
+      description: Handles Google's OAuth redirect and issues a JWT if successful.
+      responses:
+        '200':
+          description: Successfully authenticated, returns a token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Google login successful
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6...
+        '403':
+          description: Invalid or expired Google token.
+        '500':
+          description: Internal server error.

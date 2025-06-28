@@ -22,7 +22,7 @@ export const sequelize = new Sequelize({
     try {
       await sequelize.authenticate();
       console.log('✅ DB connected successfully');
-      await sequelize.sync();
+      await sequelize.sync({ force: false });
     } catch (err) {
       console.error('❌ Unable to connect to DB:', err);
     }
