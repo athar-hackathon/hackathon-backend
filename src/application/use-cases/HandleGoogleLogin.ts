@@ -19,6 +19,7 @@ export const handleGoogleLogin = async (repo: IUserRepository, profile: Profile)
       email,
       name: profile.displayName,
       password: hashed,
+      locationId: 1
     });
   }
 
