@@ -1,6 +1,11 @@
 import { loginUser } from "@/src/application/use-cases/LoginUser";
 import { UserRepository } from "@/src/infrastructure/repositories/UserRepository";
 import { Request, Response } from "express";
+import { createUser } from "@/src/application/use-cases/CreateUser";
+
+function isErrorResult(result: any): result is { error: string } {
+  return result && typeof result === "object" && "error" in result;
+}
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -16,3 +21,29 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const register = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const { email, profilePicture, password, name, age, gender, country, city, role } = req.body;
+    const result = await createUser(UserRepository)(
+      email,
+      password,
+      name,
+      age,
+      gender,
+      country,
+      city,
+      profilePicture,
+      role
+    );
+  
+    if (isErrorResult(result)) {
+      res.status(409).json({ error: result.error });
+      return;
+    }
+  
+    res.status(201).json(result);
+  };
+  

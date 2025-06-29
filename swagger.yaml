@@ -37,7 +37,7 @@ paths:
               '401':
                 description: Invalid credentials
 
-  /api/users:
+  /api/auth/register:
     post:
       summary: Register new user
       tags:
@@ -52,6 +52,22 @@ paths:
                 email:
                   type: string
                 password:
+                  type: string
+                name:
+                  type: string
+                age:
+                  type: integer
+                  minimum: 18
+                gender:
+                  type: string
+                  enum:
+                    - MALE
+                    - FEMALE
+                country:
+                  type: string
+                city:
+                  type: string
+                profilePicture:
                   type: string
               required:
                 - email
