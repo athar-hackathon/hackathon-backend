@@ -10,15 +10,15 @@ export const registerUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email, password, name, phone, age, gender, locationId } = req.body;
+  const { email, password, name, age, gender, country, city } = req.body;
   const result = await createUser(UserRepository)(
     email,
     password,
     name,
-    phone,
     age,
     gender,
-    locationId
+    country,
+    city,
   );
 
   if (isErrorResult(result)) {

@@ -6,6 +6,7 @@ import LocationModel from "./models/PlanModel";
 import DestinationModel from "./models/DestinationModel";
 import PlanModel from "./models/PlanModel";
 import AssociationModel from "./models/AssociationModel";
+import CategoryModel from "./models/CategoryModel";
 
 export const sequelize = new Sequelize({
   database: config.db.name,
@@ -36,15 +37,10 @@ const Destination = DestinationModel(sequelize, DataTypes);
 const Plan = PlanModel(sequelize, DataTypes);
 const DestinationPlan = DestinationPlanModel(sequelize, DataTypes);
 const Association = AssociationModel(sequelize, DataTypes);
+const Category = CategoryModel(sequelize, DataTypes);
 
 db.user = User;
 db.location = Location;
-
-Location.hasMany(db.user, { foreignKey: "locationId", as: "users" });
-User.belongsTo(db.location, {
-  foreignKey: "locationId",
-  as: "location",
-});
 
 Destination.belongsToMany(Plan, { through: DestinationPlan, foreignKey: 'destination_id' });
 Plan.belongsToMany(Destination, { through: DestinationPlan, foreignKey: 'plan_id' });
@@ -53,10 +49,13 @@ Location.hasOne(Destination, { foreignKey: "location_id", as: "destination" });
 Destination.belongsTo(Location, { foreignKey: "location_id", as: "location" });
 
 Association.hasOne(Destination, { foreignKey: "owner_id", as: "user" });
-User.belongsTo(Location, { foreignKey: "owner_id", as: "association" });
+User.belongsTo(Association, { foreignKey: "owner_id", as: "association" });
+
+Category.hasMany(Plan, { foreignKey: "category_id", as: "plans" });
+Plan.belongsTo(Category, { foreignKey: "category_id", as: "category" });
 
 db.sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Database synchronized successfully.");
   })

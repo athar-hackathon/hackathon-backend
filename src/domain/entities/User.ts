@@ -5,11 +5,11 @@ export interface User {
   name: string;
   role: 'admin'| 'associationOwner'| 'volunteer'
   isActive: boolean;
-  phone?: number;
   gender?: 'MALE' | 'FEMALE';
   age?: number;
   profilePicture?: string;
-  locationId: number;
+  city?: string;
+  country?: string;
   createdAt?: string;
   updatedAt?: string;
 }

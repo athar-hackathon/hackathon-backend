@@ -8,8 +8,9 @@ export interface Plan {
   appliedVolunteerNumber: number;
   isActive: boolean;
   isPaid: boolean;
-  price:string;
-  locationId: number
+  fees:string;
+  locationId: number;
+  category_id: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -25,7 +25,8 @@ const PlanModel = (
     locationId: { type: DataTypes.UUID, allowNull: false, },
     isActive: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
     isPaid: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
-    price: { type: DataTypes.INTEGER, allowNull: false, },
+    fees: { type: DataTypes.INTEGER, allowNull: true, },
+    category_id: { type: DataTypes.UUID, allowNull: false},
   });
   return Plan;
 };

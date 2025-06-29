@@ -2,7 +2,7 @@ import { IUserRepository } from "@/src/domain/repositories/IUserRepository";
 import bcrypt from "bcrypt";
 export const createUser =
   (repo: IUserRepository) =>
-  async (email: string, password: string, name: string, phone: number, age: number, gender: 'FEMALE'|'MALE', locationId: number) => {
+  async (email: string, password: string, name: string, age: number, gender: 'FEMALE'|'MALE', city: string, country: string) => {
     const hashed = await bcrypt.hash(password, 10);
     const user = await repo.findByEmail(email);
     if (user) {
@@ -12,10 +12,10 @@ export const createUser =
         email,
         password: hashed,
         name,
-        phone,
         age,
         gender,
-        locationId,
+        country,
+        city,
         isActive: false,
         role: 'volunteer'
       });
