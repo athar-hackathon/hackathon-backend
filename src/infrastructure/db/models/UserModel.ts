@@ -18,12 +18,14 @@ const UserModel = (
     },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
+    role: {type: DataTypes.ENUM('admin', 'associationOwner', 'volunteer'), allowNull:false},
     name: { type: DataTypes.STRING, allowNull: false },
-    phone: { type: DataTypes.NUMBER, allowNull: true },
+    phone: { type: DataTypes.INTEGER, allowNull: true },
     gender: { type: DataTypes.ENUM("MALE", "FEMALE"), allowNull: true },
-    age: { type: DataTypes.NUMBER, allowNull: true },
+    age: { type: DataTypes.INTEGER, allowNull: true },
     profilePicture: { type: DataTypes.TEXT, allowNull: true },
-    locationId: { type: DataTypes.NUMBER, allowNull: false },
+    locationId: { type: DataTypes.UUID, allowNull: false },
+    isActive: {type: DataTypes.BOOLEAN, allowNull: false}
   });
   return User;
 };

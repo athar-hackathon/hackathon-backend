@@ -1,7 +1,11 @@
 import { DataTypes, Sequelize } from "sequelize";
 import { config } from "@/src/config";
 import UserModel from "./models/UserModel";
-import LocationModel from "./models/LocationModel";
+import DestinationPlanModel from "./models/DestinationPlanModel";
+import LocationModel from "./models/PlanModel";
+import DestinationModel from "./models/DestinationModel";
+import PlanModel from "./models/PlanModel";
+import AssociationModel from "./models/AssociationModel";
 
 export const sequelize = new Sequelize({
   database: config.db.name,
@@ -28,6 +32,10 @@ db.sequelize = sequelize;
 
 const User = UserModel(sequelize, DataTypes);
 const Location = LocationModel(sequelize, DataTypes);
+const Destination = DestinationModel(sequelize, DataTypes);
+const Plan = PlanModel(sequelize, DataTypes);
+const DestinationPlan = DestinationPlanModel(sequelize, DataTypes);
+const Association = AssociationModel(sequelize, DataTypes);
 
 db.user = User;
 db.location = Location;
@@ -37,6 +45,15 @@ User.belongsTo(db.location, {
   foreignKey: "locationId",
   as: "location",
 });
+
+Destination.belongsToMany(Plan, { through: DestinationPlan, foreignKey: 'destination_id' });
+Plan.belongsToMany(Destination, { through: DestinationPlan, foreignKey: 'plan_id' });
+
+Location.hasOne(Destination, { foreignKey: "location_id", as: "destination" });
+Destination.belongsTo(Location, { foreignKey: "location_id", as: "location" });
+
+Association.hasOne(Destination, { foreignKey: "owner_id", as: "user" });
+User.belongsTo(Location, { foreignKey: "owner_id", as: "association" });
 
 db.sequelize
   .sync({ force: false })

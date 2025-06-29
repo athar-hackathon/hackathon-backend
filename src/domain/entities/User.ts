@@ -3,6 +3,8 @@ export interface User {
   email: string;
   password: string;
   name: string;
+  role: 'admin'| 'associationOwner'| 'volunteer'
+  isActive: boolean;
   phone?: number;
   gender?: 'MALE' | 'FEMALE';
   age?: number;

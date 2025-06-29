@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import passport from 'passport';
 dotenv.config();
 
 export const config = {

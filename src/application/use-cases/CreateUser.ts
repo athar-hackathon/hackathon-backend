@@ -16,6 +16,8 @@ export const createUser =
         age,
         gender,
         locationId,
+        isActive: false,
+        role: 'volunteer'
       });
     }
   };
