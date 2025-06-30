@@ -7,5 +7,14 @@ export const loginUser = (repo: IUserRepository) => async (email: string, passwo
     if (!user || !(await bcrypt.compare(password,user.password))) {
         throw new Error('Invalid credentials');
     }
-    return generateToken({id: user.id, email: user.email});
+    
+    // Debug: Log user data
+    console.log('User found during login:', user);
+    console.log('User role:', user.role);
+    console.log('User role type:', typeof user.role);
+    
+    const tokenPayload = {id: user.id, email: user.email, role: user.role};
+    console.log('Token payload:', tokenPayload);
+    
+    return generateToken(tokenPayload);
 }

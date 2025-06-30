@@ -18,9 +18,9 @@ const AssociationModel = (
     },
     name: { type: DataTypes.STRING, allowNull: false, unique: true },
     description: { type: DataTypes.STRING, allowNull: false },
-    intagram_url: { type: DataTypes.INTEGER, allowNull: false},
-    facebook_url: { type: DataTypes.INTEGER, allowNull: false},
-    twitter_url: { type: DataTypes.INTEGER, allowNull: false},
+    intagram_url: { type: DataTypes.STRING, allowNull: true},
+    facebook_url: { type: DataTypes.STRING, allowNull: true},
+    twitter_url: { type: DataTypes.STRING, allowNull: true},
     owner_id: { type: DataTypes.UUID, allowNull: false},
   });
   return Association;

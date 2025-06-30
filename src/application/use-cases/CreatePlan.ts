@@ -1,6 +1,4 @@
-import { Fees } from "@/src/domain/entities/Fees";
 import { IPlanRepository } from "@/src/domain/repositories/IPlanRepository";
-import bcrypt from "bcrypt";
 export const createPlan =
   (repo: IPlanRepository) =>
   async (
@@ -13,6 +11,7 @@ export const createPlan =
     totalFees:string,
     destinationId: number,
     category_id: string,
+    associationId: string
   ) => {
       return repo.createPlan({
         name,
@@ -26,6 +25,7 @@ export const createPlan =
         totalFees,
         destinationId,
         category_id,
+        associationId
       });
-    
+
   };

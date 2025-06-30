@@ -13,4 +13,5 @@ export interface Plan {
   category_id: string;
   createdAt?: string;
   updatedAt?: string;
+  associationId: string;
 }

@@ -27,6 +27,7 @@ const PlanModel = (
     isPaid: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
     totalFees: { type: DataTypes.INTEGER, allowNull: true, },
     category_id: { type: DataTypes.UUID, allowNull: false},
+    associationId: { type: DataTypes.UUID, allowNull: false},
   });
   return Plan;
 };

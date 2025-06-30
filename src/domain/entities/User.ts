@@ -12,4 +12,5 @@ export interface User {
   country?: string;
   createdAt?: string;
   updatedAt?: string;
+  interests?: string[];
 }
