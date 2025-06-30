@@ -14,8 +14,7 @@ export const login = async (req: Request, res: Response) => {
     const token = await loginUser(UserRepository)(email, password);
     res
       .status(201)
-      .header("authorization", token)
-      .json({ email, message: "Login Successful" });
+      .json({ data: {email, token: token}, message: "Login Successful" });
   } catch {
     res.status(401).json({
       message: "Invalid credentials",

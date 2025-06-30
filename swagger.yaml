@@ -53,6 +53,9 @@ paths:
                       name:
                         type: string
                         example: "John Doe"
+                      token:
+                        type: string
+                        example: "volunteer"
                       role:
                         type: string
                         example: "volunteer"
