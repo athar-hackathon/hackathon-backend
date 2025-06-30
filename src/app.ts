@@ -11,6 +11,7 @@ import { config } from "@/src/config";
 import './infrastructure/auth/passport';
 import passport from 'passport';
 import session from 'express-session';
+import associationRoutes from "@/src/interfaces/routes/associationRoutes";
 
 const  app = express();
 app.use(express.json())
@@ -37,5 +38,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', fileRouter);
 app.use('/api/plan', planRouter);
+app.use("/api/association", associationRoutes);
 
 export default app

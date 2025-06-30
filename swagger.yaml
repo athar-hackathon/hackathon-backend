@@ -348,3 +348,81 @@ paths:
                           type: array
                           items:
                             type: string
+
+  /api/association/{id}:
+    get:
+      summary: Get association by ID
+      tags:
+        - Association
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Association ID
+      responses:
+        '200':
+          description: Association found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '404':
+          description: Association not found
+
+  /api/association:
+    get:
+      summary: Get all associations
+      tags:
+        - Association
+      responses:
+        '200':
+          description: List of associations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Association'
+
+  /api/association/me:
+    get:
+      summary: Get my association (authorized)
+      tags:
+        - Association
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Your association
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "Green Earth Association"
+        description:
+          type: string
+          example: "An environmental protection organization"
+        owner_id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
