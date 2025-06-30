@@ -38,7 +38,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     }
     res
       .status(201)
-      .json({ plan, message: "Login Successful" });
+      .json({ data: plan, message: "Login Successful" });
   } catch {
     res.status(401).json({
       message: "Invalid credentials",

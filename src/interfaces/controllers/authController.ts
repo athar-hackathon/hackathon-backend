@@ -44,6 +44,6 @@ export const register = async (
       return;
     }
   
-    res.status(201).json(result);
+    res.status(201).json({data: result});
   };
   

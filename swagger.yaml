@@ -169,3 +169,100 @@ paths:
           description: Invalid or expired Google token.
         '500':
           description: Internal server error.
+
+  /api/plan/create:
+    post:
+      summary: Create a new plan
+      tags:
+        - Plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: My Awesome Plan
+                description:
+                  type: string
+                  example: This is a description of my awesome plan.
+                startDate:
+                  type: string
+                  format: date-time
+                  example: 2025-01-15T10:00:00.000Z
+                endDate:
+                  type: string
+                  format: date-time
+                  example: 2025-01-20T18:00:00.000Z
+                volunteerNumber:
+                  type: integer
+                  example: 10
+                destinationId:
+                  type: string
+                  example: 550e8400-e29b-41d4-a716-446655440000
+                category_id:
+                  type: string
+                  example: 123e4567-e89b-12d3-a456-426614174000
+                fees:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: fee-type-1
+                      name:
+                        type: string
+                        example: Registration Fee
+                      fees:
+                        type: string
+                        example: "100.00"
+              required:
+                - name
+                - description
+                - startDate
+                - endDate
+                - volunteerNumber
+                - destinationId
+                - category_id
+                - fees
+      responses:
+        '201':
+          description: Plan created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan created successfully
+                  data:
+                    type: object
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Validation failed
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        validation:
+                          type: string
+                        code:
+                          type: string
+                        message:
+                          type: string
+                        path:
+                          type: array
+                          items:
+                            type: string

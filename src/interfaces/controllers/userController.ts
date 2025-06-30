@@ -28,5 +28,5 @@ export const registerUser = async (
     return;
   }
 
-  res.status(201).json(result);
+  res.status(201).json({data: result});
 };
