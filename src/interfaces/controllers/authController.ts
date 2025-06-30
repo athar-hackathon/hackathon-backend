@@ -3,6 +3,7 @@ import { UserRepository } from "@/src/infrastructure/repositories/UserRepository
 import { Request, Response } from "express";
 import { createUser } from "@/src/application/use-cases/CreateUser";
 import { createAssociation } from "@/src/application/use-cases/CreateAssociation";
+import { getBase64Image } from "@/src/infrastructure/services/getBase64Image";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
@@ -12,9 +13,17 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const token = await loginUser(UserRepository)(email, password);
+    const user = await UserRepository.findByEmail(email);
+    if (!user) {
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
+    }
+    if (user.profilePicture) {
+      user.profilePicture = getBase64Image(user.profilePicture);
+    }
     res
       .status(201)
-      .json({ data: {email, token: token}, message: "Login Successful" });
+      .json({ data: { ...user, token }, message: "Login Successful" });
   } catch {
     res.status(401).json({
       message: "Invalid credentials",

@@ -6,4 +6,5 @@ export interface Association {
     facebook_url?:string;
     twitter_url?:string;
     owner_id: string;
+    image_url?:string;
 }
