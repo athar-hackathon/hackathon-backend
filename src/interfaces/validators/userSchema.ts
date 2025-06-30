@@ -1,4 +1,5 @@
 import z from "zod";
+import { associationSchema } from "./associationSchema";
 
 export const userSchema = z.object({
     email: z.string().email(),
@@ -9,6 +10,7 @@ export const userSchema = z.object({
     country: z.string(),
     city: z.string(),
     profilePicture: z.string(),
+    role: z.enum(["volunteer", "associationOwner"]),
+    associationData: associationSchema.optional(),
 })
-
 export type CreateUserInput = z.infer<typeof userSchema>

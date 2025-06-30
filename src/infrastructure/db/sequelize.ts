@@ -67,7 +67,7 @@ Plan.hasMany(Fees, { foreignKey: "plan_id", as: "fees" });
 Fees.belongsTo(Plan, { foreignKey: "plan_id", as: "plan" });
 
 db.sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Database synchronized successfully.");
   })
