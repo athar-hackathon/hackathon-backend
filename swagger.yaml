@@ -25,40 +25,34 @@ paths:
                 - email
                 - password
       responses:
-        '200':
-          description: Login successful
-          headers:
-            Authorization:
-              description: JWT token for authentication
-              schema:
-                type: string
-                example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '201':
+          description: Login Successful
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    example: "Login successful"
-                  user:
+                  data:
                     type: object
                     properties:
                       id:
                         type: string
-                        example: "550e8400-e29b-41d4-a716-446655440000"
+                        example: "user-uuid"
                       email:
                         type: string
                         example: "user@example.com"
                       name:
                         type: string
                         example: "John Doe"
+                      profilePicture:
+                        type: string
+                        example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
                       token:
                         type: string
-                        example: "volunteer"
-                      role:
-                        type: string
-                        example: "volunteer"
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  message:
+                    type: string
+                    example: "Login Successful"
         '401':
           description: Invalid credentials
           content:
@@ -66,9 +60,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
-                    example: "Invalid email or password"
+                    example: "Invalid credentials"
 
   /api/auth/register:
     post:
