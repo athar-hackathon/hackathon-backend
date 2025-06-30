@@ -63,6 +63,11 @@ paths:
                   enum:
                     - MALE
                     - FEMALE
+                role:
+                  type: string
+                  enum:
+                    - volunteer
+                    - associationOwner
                 country:
                   type: string
                 city:
