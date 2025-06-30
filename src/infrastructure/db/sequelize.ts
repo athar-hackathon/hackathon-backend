@@ -7,6 +7,7 @@ import DestinationModel from "./models/DestinationModel";
 import PlanModel from "./models/PlanModel";
 import AssociationModel from "./models/AssociationModel";
 import CategoryModel from "./models/CategoryModel";
+import FeesModel from "./models/FeesModel";
 
 export const sequelize = new Sequelize({
   database: config.db.name,
@@ -31,6 +32,7 @@ export const db: any = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+
 const User = UserModel(sequelize, DataTypes);
 const Location = LocationModel(sequelize, DataTypes);
 const Destination = DestinationModel(sequelize, DataTypes);
@@ -38,21 +40,31 @@ const Plan = PlanModel(sequelize, DataTypes);
 const DestinationPlan = DestinationPlanModel(sequelize, DataTypes);
 const Association = AssociationModel(sequelize, DataTypes);
 const Category = CategoryModel(sequelize, DataTypes);
+const Fees = FeesModel(sequelize, DataTypes);
 
 db.user = User;
 db.location = Location;
+db.destination = Location;
+db.plan = Plan;
+db.destination_plan = Destination;
+db.association = Association;
+db.category = Category;
+db.fees = Fees;
 
 Destination.belongsToMany(Plan, { through: DestinationPlan, foreignKey: 'destination_id' });
 Plan.belongsToMany(Destination, { through: DestinationPlan, foreignKey: 'plan_id' });
 
-Location.hasOne(Destination, { foreignKey: "location_id", as: "destination" });
-Destination.belongsTo(Location, { foreignKey: "location_id", as: "location" });
+// Location.hasOne(Destination, { foreignKey: "location_id", as: "destination" });
+// Location.belongsTo(Destination, { foreignKey: "location_id", as: "location" });
 
-Association.hasOne(Destination, { foreignKey: "owner_id", as: "user" });
+Association.hasOne(User, { foreignKey: "owner_id", as: "user" });
 User.belongsTo(Association, { foreignKey: "owner_id", as: "association" });
 
 Category.hasMany(Plan, { foreignKey: "category_id", as: "plans" });
 Plan.belongsTo(Category, { foreignKey: "category_id", as: "category" });
+
+Plan.hasMany(Fees, { foreignKey: "plan_id", as: "fees" });
+Fees.belongsTo(Plan, { foreignKey: "plan_id", as: "plan" });
 
 db.sequelize
   .sync({ force: true })

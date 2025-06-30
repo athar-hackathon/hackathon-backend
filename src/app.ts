@@ -1,6 +1,7 @@
 import express from 'express'
 import authRoutes from './interfaces/routes/authRoutes';
 import userRoutes from './interfaces/routes/userRoutes';
+import planRouter from './interfaces/routes/planRoutes';
 import { setupSwagger } from './infrastructure/swagger/swagger';
 import cors from "cors";
 import path from 'path';
@@ -35,5 +36,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', fileRouter);
+app.use('/api/plan', planRouter);
 
 export default app

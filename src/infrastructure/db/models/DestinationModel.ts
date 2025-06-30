@@ -18,7 +18,7 @@ const DestinationModel = (
     },
     name: { type: DataTypes.STRING, allowNull: false, unique: true },
     description: { type: DataTypes.STRING, allowNull: false },
-    location_id: { type: DataTypes.UUID, allowNull: false}
+    location_id: { type: DataTypes.UUID, allowNull: false,}
   });
   return Destination;
 };

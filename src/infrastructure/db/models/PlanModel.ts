@@ -22,10 +22,10 @@ const PlanModel = (
     endDate: {type: DataTypes.DATE, allowNull:false},
     volunteerNumber: { type: DataTypes.INTEGER, allowNull: true },
     appliedVolunteerNumber: { type: DataTypes.INTEGER, allowNull: true },
-    locationId: { type: DataTypes.UUID, allowNull: false, },
+    destinationId: { type: DataTypes.UUID, allowNull: false, },
     isActive: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
     isPaid: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
-    fees: { type: DataTypes.INTEGER, allowNull: true, },
+    totalFees: { type: DataTypes.INTEGER, allowNull: true, },
     category_id: { type: DataTypes.UUID, allowNull: false},
   });
   return Plan;
