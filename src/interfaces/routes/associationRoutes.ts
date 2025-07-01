@@ -8,4 +8,4 @@ router.get("/", getAllAssociationsController);
 router.get("/me", verifyTokenMiddleware, getMyAssociationController);
 router.get("/:id", getAssociationByIdController);
 
-export default router; 
+export default router;

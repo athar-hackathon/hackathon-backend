@@ -16,7 +16,7 @@ export const UserPlanRepository: IUserPlanRepository = {
 
   async getPendingApplications(planId: string): Promise<UserPlan[]> {
     const applications = await db.user_plan.findAll({
-      where: { 
+      where: {
         planId,
         status: 'pending'
       },
@@ -48,7 +48,7 @@ export const UserPlanRepository: IUserPlanRepository = {
   async updateApplicationStatus(id: string, status: 'accepted' | 'rejected'): Promise<UserPlan | null> {
     const application = await db.user_plan.findByPk(id);
     if (!application) return null;
-    
+
     await application.update({ status });
     return application.get() as UserPlan;
   },
@@ -71,5 +71,8 @@ export const UserPlanRepository: IUserPlanRepository = {
       where: { userId, planId }
     });
     return application ? (application.get() as UserPlan) : null;
+  },
+  findByAssociationId: function (associationId: string): unknown {
+    throw new Error("Function not implemented.");
   }
 }; 

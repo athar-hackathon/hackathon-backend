@@ -5,6 +5,10 @@ import { getPendingAssociations } from '../../application/use-cases/GetPendingAs
 import { UserRepository } from '../../infrastructure/repositories/UserRepository';
 import { deletePlan } from '../../application/use-cases/DeletePlan';
 import { PlanRepository } from '../../infrastructure/repositories/PlanRepository';
+import { GetAdminStats } from '../../application/use-cases/GetAdminStats';
+import { AssociationRepository } from '../../infrastructure/repositories/AssociationRepository';
+import { CategoryRepository } from '../../infrastructure/repositories/CategoryRepository';
+import { ReviewRepository } from '../../infrastructure/repositories/ReviewRepository';
 
 export const getPendingAssociationsController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -103,6 +107,29 @@ export const deletePlanController = async (req: Request, res: Response): Promise
     });
   } catch (error) {
     console.error('Error deleting plan:', error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Internal server error'
+    });
+  }
+};
+
+export const getAdminStatsController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const stats = await GetAdminStats(
+      UserRepository,
+      AssociationRepository,
+      PlanRepository,
+      CategoryRepository,
+      ReviewRepository
+    )();
+    res.status(200).json({
+      success: true,
+      data: stats,
+      message: 'Admin stats retrieved successfully'
+    });
+  } catch (error) {
+    console.error('Error getting admin stats:', error);
     res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : 'Internal server error'

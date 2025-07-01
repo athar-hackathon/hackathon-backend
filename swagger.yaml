@@ -205,6 +205,74 @@ components:
           type: string
         message:
           type: string
+    AdminStats:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+        userGrowth:
+          type: object
+          properties:
+            thisMonth:
+              type: integer
+            thisWeek:
+              type: integer
+        userDistribution:
+          type: object
+          properties:
+            volunteers:
+              type: integer
+            associationOwners:
+              type: integer
+        pendingAssociations:
+          type: integer
+        approvedAssociations:
+          type: integer
+        associationApprovalRate:
+          type: number
+        totalPlans:
+          type: integer
+        activePlans:
+          type: integer
+        plansByCategory:
+          type: array
+          items:
+            type: object
+            properties:
+              categoryName:
+                type: string
+              count:
+                type: integer
+        topRatedAssociations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              averageRating:
+                type: number
+              totalReviews:
+                type: integer
+        bottomRatedAssociations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              averageRating:
+                type: number
+              totalReviews:
+                type: integer
+        totalReviews:
+          type: integer
+        averagePlatformRating:
+          type: number
     Error:
       type: object
       properties:
@@ -464,6 +532,124 @@ paths:
                 $ref: '#/components/schemas/Plan'
         '404':
           description: Plan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/stats:
+    get:
+      summary: Get admin statistics
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Admin statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      totalUsers:
+                        type: integer
+                      userGrowth:
+                        type: object
+                        properties:
+                          thisMonth:
+                            type: integer
+                          thisWeek:
+                            type: integer
+                      userDistribution:
+                        type: object
+                        properties:
+                          volunteers:
+                            type: integer
+                          associationOwners:
+                            type: integer
+                      pendingAssociations:
+                        type: integer
+                      approvedAssociations:
+                        type: integer
+                      associationApprovalRate:
+                        type: number
+                      totalPlans:
+                        type: integer
+                      activePlans:
+                        type: integer
+                      plansByCategory:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            categoryName:
+                              type: string
+                            count:
+                              type: integer
+                      topRatedAssociations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            averageRating:
+                              type: number
+                            totalReviews:
+                              type: integer
+                      bottomRatedAssociations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            averageRating:
+                              type: number
+                            totalReviews:
+                              type: integer
+                      totalReviews:
+                        type: integer
+                      averagePlatformRating:
+                        type: number
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/admin/stats:
+    get:
+      summary: Get admin statistics
+      tags: [Admin]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Admin statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/AdminStats'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:

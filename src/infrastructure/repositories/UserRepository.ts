@@ -21,7 +21,7 @@ export const UserRepository: IUserRepository = {
   async update(id: string, userData: Partial<User>) {
     const user = await db.user.findByPk(id);
     if (!user) return null;
-    
+
     await user.update(userData);
     return user.get() as User;
   },
@@ -34,5 +34,6 @@ export const UserRepository: IUserRepository = {
       order: [['createdAt', 'DESC']]
     });
     return users.map((user: Model) => user.get() as User);
-  }
+  },
+  findAll: undefined
 };

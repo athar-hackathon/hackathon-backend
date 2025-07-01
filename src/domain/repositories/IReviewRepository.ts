@@ -1,6 +1,7 @@
 import { Review } from "../entities/Review";
 
 export interface IReviewRepository {
+  findAll(): any;
   create(review: Omit<Review, "id" | "createdAt" | "updatedAt">): Promise<Review>;
   findById(id: string): Promise<Review | null>;
   findByAssociationId(associationId: string): Promise<Review[]>;

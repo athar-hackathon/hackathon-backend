@@ -71,7 +71,7 @@ export const ReviewRepository: IReviewRepository = {
   async update(id: string, reviewData: Partial<Review>): Promise<Review | null> {
     const review = await db.review.findByPk(id);
     if (!review) return null;
-    
+
     await review.update(reviewData);
     return review.get() as Review;
   },
@@ -94,7 +94,7 @@ export const ReviewRepository: IReviewRepository = {
       attributes: [[db.Sequelize.fn('AVG', db.Sequelize.col('rating')), 'averageRating']],
       raw: true
     });
-    
+
     return result ? parseFloat(result.averageRating as string) || 0 : 0;
   },
 
@@ -103,5 +103,8 @@ export const ReviewRepository: IReviewRepository = {
       where: { associationId }
     });
     return count;
+  },
+  findAll: function (): unknown {
+    throw new Error("Function not implemented.");
   }
 }; 

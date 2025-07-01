@@ -6,6 +6,7 @@ import {
   rejectAssociationController,
   deletePlanController
 } from '../controllers/adminController';
+import { getAdminStatsController } from '../controllers/adminController';
 import { validate } from '../middlewares/validate';
 import { deletePlanSchema } from '../validators/commonSchemas';
 
@@ -13,6 +14,9 @@ const router = Router();
 
 // Apply admin middleware to all routes
 router.use(verifyTokenMiddleware);
+
+// Get admin statistics
+router.get('/stats', getAdminStatsController);
 
 // Get pending associations for approval
 router.get('/associations/pending', getPendingAssociationsController);

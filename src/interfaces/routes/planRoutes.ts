@@ -6,7 +6,6 @@ import {
   create,
   getPlansByCategoryNameController
 } from "../controllers/planController";
-import { planFilterQuerySchema } from "../validators/planFilterSchema";
 import { validate } from "../middlewares/validate";
 import { planSchema } from "../validators/planSchema";
 const router = Router();

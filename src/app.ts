@@ -25,8 +25,8 @@ app.use(passport.session());
 setupSwagger(app);
 const corsOptions = {
     origin: [
-      config.cors.developmentMode,
-      config.cors.deploymentMode
+      ...(Array.isArray(config.cors.developmentMode) ? config.cors.developmentMode : [config.cors.developmentMode]),
+      ...(Array.isArray(config.cors.deploymentMode) ? config.cors.deploymentMode : [config.cors.deploymentMode])
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],

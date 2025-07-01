@@ -24,6 +24,10 @@ export const config = {
 
   cors: {
     developmentMode: process.env.FRONTEND_URL || "http://localhost:3000",
-    deploymentMode: process.env.FRONTEND_URL_NET || "http://localhost:3000",
+    deploymentMode: [
+      process.env.FRONTEND_URL_NET || "http://localhost:3000",
+      "https://oxyjeunes-dashboard.vercel.app",
+      "https://oxyjeunes-dashboard-git-main-akram-sas-projects.vercel.app"
+    ],
   }
 };

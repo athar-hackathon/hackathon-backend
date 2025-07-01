@@ -1,6 +1,7 @@
 import { UserPlan } from "../entities/UserPlan";
 
 export interface IUserPlanRepository {
+  findByAssociationId(associationId: string): unknown;
   applyToPlan(userId: string, planId: string): Promise<UserPlan>;
   getPendingApplications(planId: string): Promise<UserPlan[]>;
   getApplicationById(id: string): Promise<UserPlan | null>;
