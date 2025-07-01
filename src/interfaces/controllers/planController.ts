@@ -265,7 +265,7 @@ export const updatePlanController = async (req: AuthRequest, res: Response): Pro
       return;
     }
 
-    const result = await updatePlan(PlanRepository, UserRepository)(
+    const result = await updatePlan(PlanRepository, UserRepository, AssociationRepository)(
       planId,
       req.user.id,
       updateData
@@ -308,7 +308,7 @@ export const deletePlanController = async (req: AuthRequest, res: Response): Pro
 
     // For association owners, we'll use their ID as the "adminId" 
     // but modify the deletePlan use case to allow association owners
-    const result = await deletePlan(PlanRepository, UserRepository)(
+    const result = await deletePlan(PlanRepository, UserRepository, AssociationRepository)(
       planId,
       req.user.id,
       reason

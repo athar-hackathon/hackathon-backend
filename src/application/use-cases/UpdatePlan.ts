@@ -1,6 +1,7 @@
 import { IPlanRepository } from "@/src/domain/repositories/IPlanRepository";
 import { IUserRepository } from "@/src/domain/repositories/IUserRepository";
 import { Plan } from "@/src/domain/entities/Plan";
+import { IAssociationRepository } from "@/src/domain/repositories/IAssociationRepository";
 
 export interface UpdatePlanData {
   name?: string;
@@ -14,7 +15,7 @@ export interface UpdatePlanData {
   image_url?: string;
 }
 
-export const updatePlan = (planRepo: IPlanRepository, userRepo: IUserRepository) => async (
+export const updatePlan = (planRepo: IPlanRepository, userRepo: IUserRepository, associationRepo: IAssociationRepository) => async (
   planId: string,
   userId: string,
   updateData: UpdatePlanData
@@ -31,9 +32,21 @@ export const updatePlan = (planRepo: IPlanRepository, userRepo: IUserRepository)
     }
 
     // Check if user is the association owner of this plan
-    if (user.role !== 'associationOwner' || plan.associationId !== user.id) {
+    if (user.role !== 'associationOwner') {
+      return { success: false, error: "Unauthorized: Only association owners can update plans" };
+    }
+
+    // Get the association owned by this user
+    const userAssociations = await associationRepo.findByOwnerId(userId);
+    if (userAssociations.length === 0) {
+      return { success: false, error: "User does not own any association" };
+    }
+
+    const userAssociationId = userAssociations[0].id;
+    if (String(plan.associationId) !== String(userAssociationId)) {
       return { success: false, error: "Unauthorized: Only the association owner can update this plan" };
     }
+
     // Convert date strings to Date objects
     const processedUpdateData = {
       ...updateData,

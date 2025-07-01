@@ -3,8 +3,9 @@ import { IUserRepository } from "@/src/domain/repositories/IUserRepository";
 import { EmailService } from "@/src/infrastructure/services/EmailService";
 import { Plan } from "@/src/domain/entities/Plan";
 import { db } from "@/src/infrastructure/db/sequelize";
+import { IAssociationRepository } from "@/src/domain/repositories/IAssociationRepository";
 
-export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository) => async (
+export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository, associationRepo: IAssociationRepository) => async (
   planId: string, 
   userId: string,
   reason?: string
@@ -22,7 +23,16 @@ export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository)
 
     // Check if user is admin or the association owner of this plan
     const isAdmin = user.role === 'admin';
-    const isAssociationOwner = user.role === 'associationOwner' && plan.associationId === user.id;
+    let isAssociationOwner = false;
+    
+    if (user.role === 'associationOwner') {
+      // Get the association owned by this user
+      const userAssociations = await associationRepo.findByOwnerId(userId);
+      if (userAssociations.length > 0) {
+        const userAssociationId = userAssociations[0].id;
+        isAssociationOwner = String(plan.associationId) === String(userAssociationId);
+      }
+    }
     
     if (!isAdmin && !isAssociationOwner) {
       return { success: false, error: "Unauthorized: Admin or association owner access required" };

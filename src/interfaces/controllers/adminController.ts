@@ -90,7 +90,7 @@ export const deletePlanController = async (req: Request, res: Response): Promise
     // @ts-ignore
     const adminId = req.user.id; 
 
-    const result = await deletePlan(PlanRepository, UserRepository)(planId, adminId, reason);
+    const result = await deletePlan(PlanRepository, UserRepository, AssociationRepository)(planId, adminId, reason);
 
     if (!result.success) {
       res.status(400).json({
