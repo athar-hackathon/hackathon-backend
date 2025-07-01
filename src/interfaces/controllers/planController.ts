@@ -17,6 +17,10 @@ import { updatePlan } from "@/src/application/use-cases/UpdatePlan";
 import { deletePlan } from "@/src/application/use-cases/DeletePlan";
 import { UserRepository } from "@/src/infrastructure/repositories/UserRepository";
 import { AssociationRepository } from "@/src/infrastructure/repositories/AssociationRepository";
+import { getPendingApplicationsForAssociation } from "@/src/application/use-cases/GetPendingApplicationsForAssociation";
+import { acceptApplication } from "@/src/application/use-cases/AcceptApplication";
+import { rejectApplication } from "@/src/application/use-cases/RejectApplication";
+import { UserPlanRepository } from "@/src/infrastructure/repositories/UserPlanRepository";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
@@ -328,6 +332,128 @@ export const deletePlanController = async (req: AuthRequest, res: Response): Pro
     });
   } catch (error) {
     console.error("Error deleting plan:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
+    });
+  }
+};
+
+export const getPendingApplicationsController = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+      return;
+    }
+
+    const result = await getPendingApplicationsForAssociation(
+      UserPlanRepository,
+      PlanRepository,
+      AssociationRepository,
+      UserRepository
+    )(req.user.id);
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: result.error
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result.applications,
+      message: "Pending applications retrieved successfully"
+    });
+  } catch (error) {
+    console.error("Error getting pending applications:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
+    });
+  }
+};
+
+export const acceptApplicationController = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { applicationId } = req.params;
+    
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+      return;
+    }
+
+    const result = await acceptApplication(
+      UserPlanRepository,
+      PlanRepository,
+      UserRepository,
+      AssociationRepository
+    )(applicationId, req.user.id);
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: result.error
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result.application,
+      message: "Application accepted successfully"
+    });
+  } catch (error) {
+    console.error("Error accepting application:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
+    });
+  }
+};
+
+export const rejectApplicationController = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { applicationId } = req.params;
+    const { reason } = req.body;
+    
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+      return;
+    }
+
+    const result = await rejectApplication(
+      UserPlanRepository,
+      PlanRepository,
+      UserRepository,
+      AssociationRepository
+    )(applicationId, req.user.id, reason);
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: result.error
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result.application,
+      message: "Application rejected successfully"
+    });
+  } catch (error) {
+    console.error("Error rejecting application:", error);
     res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : "Internal server error"

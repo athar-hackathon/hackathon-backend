@@ -2,11 +2,13 @@ import { IUserPlanRepository } from "@/src/domain/repositories/IUserPlanReposito
 import { IPlanRepository } from "@/src/domain/repositories/IPlanRepository";
 import { IUserRepository } from "@/src/domain/repositories/IUserRepository";
 import { EmailService } from "@/src/infrastructure/services/EmailService";
+import { IAssociationRepository } from "@/src/domain/repositories/IAssociationRepository";
 
 export const rejectApplication = (
   userPlanRepo: IUserPlanRepository,
   planRepo: IPlanRepository,
-  userRepo: IUserRepository
+  userRepo: IUserRepository,
+  associationRepo: IAssociationRepository
 ) => async (applicationId: string, associationOwnerId: string, reason?: string): Promise<{ success: boolean; application?: any; error?: string }> => {
   try {
     const application = await userPlanRepo.getApplicationById(applicationId);
@@ -19,8 +21,16 @@ export const rejectApplication = (
       return { success: false, error: "Unauthorized: Only association owners can reject applications" };
     }
 
+    // Get the association owned by this user
+    const userAssociations = await associationRepo.findByOwnerId(associationOwnerId);
+    if (userAssociations.length === 0) {
+      return { success: false, error: "User does not own any association" };
+    }
+
+    const userAssociationId = userAssociations[0].id;
+
     const plan = await planRepo.findById(application.planId);
-    if (!plan || plan.associationId !== associationOwnerId) {
+    if (!plan || String(plan.associationId) !== String(userAssociationId)) {
       return { success: false, error: "Unauthorized: You can only reject applications for your own plans" };
     }
 
