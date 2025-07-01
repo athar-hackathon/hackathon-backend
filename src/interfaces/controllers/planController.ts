@@ -13,6 +13,10 @@ import { AuthRequest } from "../middlewares/authMiddleware";
 import { getPlansByCategoryName } from "@/src/application/use-cases/GetPlansByCategoryName";
 import { CategoryRepository } from "@/src/infrastructure/repositories/CategoryRepository";
 import { getBase64Image } from "@/src/infrastructure/services/getBase64Image";
+import { updatePlan } from "@/src/application/use-cases/UpdatePlan";
+import { deletePlan } from "@/src/application/use-cases/DeletePlan";
+import { UserRepository } from "@/src/infrastructure/repositories/UserRepository";
+import { AssociationRepository } from "@/src/infrastructure/repositories/AssociationRepository";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
@@ -127,24 +131,52 @@ export const filterPlans = async (
 };
 
 export const getAllPlansController = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ): Promise<void> => {
   try {
-    const plans = await getAllPlans(PlanRepository)();
-    plans.forEach(p => {
+    let plans: any[] = [];
+    
+    // Check if user is authenticated
+    if (req.user) {
+      const user = req.user;
+      
+      if (user.role === 'admin') {
+        // Admin gets all plans
+        plans = await getAllPlans(PlanRepository)();
+      } else if (user.role === 'associationOwner') {
+        // Association owner gets only their plans
+        // First get the association owned by this user
+        const userAssociations = await AssociationRepository.findByOwnerId(user.id);
+        if (userAssociations.length > 0) {
+          const associationId = userAssociations[0].id;
+          plans = await getAllPlans(PlanRepository)();
+          plans = plans.filter((plan: any) => plan.associationId === associationId);
+        } else {
+          plans = []; // No association found, return empty array
+        }
+      } else {
+        // Volunteers get all plans (public view)
+        plans = await getAllPlans(PlanRepository)();
+      }
+    } else {
+      // Unauthenticated users get all plans (public view)
+      plans = await getAllPlans(PlanRepository)();
+    }
+    
+    plans.forEach((p: any) => {
       if (p.image_url) {
-
         p.image_url = getBase64Image(p.image_url);
       }
     });
+    
     res.status(200).json({
       success: true,
       data: plans,
-      message: "All plans retrieved successfully",
+      message: "Plans retrieved successfully",
     });
   } catch (error) {
-    console.error("Error getting all plans:", error);
+    console.error("Error getting plans:", error);
     res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : "Internal server error",
@@ -216,6 +248,89 @@ export const getPlansByCategoryNameController = async (
     res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : "Internal server error",
+    });
+  }
+};
+
+export const updatePlanController = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id: planId } = req.params;
+    const updateData = req.body;
+    
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+      return;
+    }
+
+    const result = await updatePlan(PlanRepository, UserRepository)(
+      planId,
+      req.user.id,
+      updateData
+    );
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: result.error
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result.plan,
+      message: "Plan updated successfully"
+    });
+  } catch (error) {
+    console.error("Error updating plan:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
+    });
+  }
+};
+
+export const deletePlanController = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { id: planId } = req.params;
+    const { reason } = req.body;
+    
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication required"
+      });
+      return;
+    }
+
+    // For association owners, we'll use their ID as the "adminId" 
+    // but modify the deletePlan use case to allow association owners
+    const result = await deletePlan(PlanRepository, UserRepository)(
+      planId,
+      req.user.id,
+      reason
+    );
+
+    if (!result.success) {
+      res.status(400).json({
+        success: false,
+        message: result.error
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Plan deleted successfully"
+    });
+  } catch (error) {
+    console.error("Error deleting plan:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
     });
   }
 };

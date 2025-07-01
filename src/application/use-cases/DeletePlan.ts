@@ -6,7 +6,7 @@ import { db } from "@/src/infrastructure/db/sequelize";
 
 export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository) => async (
   planId: string, 
-  adminId: string,
+  userId: string,
   reason?: string
 ): Promise<{ success: boolean; error?: string }> => {
   try {
@@ -15,9 +15,17 @@ export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository)
       return { success: false, error: "Plan not found" };
     }
 
-    const admin = await userRepo.findById(adminId);
-    if (!admin || admin.role !== 'admin') {
-      return { success: false, error: "Unauthorized: Admin access required" };
+    const user = await userRepo.findById(userId);
+    if (!user) {
+      return { success: false, error: "User not found" };
+    }
+
+    // Check if user is admin or the association owner of this plan
+    const isAdmin = user.role === 'admin';
+    const isAssociationOwner = user.role === 'associationOwner' && plan.associationId === user.id;
+    
+    if (!isAdmin && !isAssociationOwner) {
+      return { success: false, error: "Unauthorized: Admin or association owner access required" };
     }
 
     if (!plan.associationId) {
@@ -41,15 +49,17 @@ export const deletePlan = (planRepo: IPlanRepository, userRepo: IUserRepository)
       return { success: false, error: "Failed to delete plan" };
     }
 
-    // Send email notification to the association owner
-    const emailService = new EmailService();
-    await emailService.sendPlanDeletionEmail(
-      associationOwner.email,
-      associationOwner.name,
-      plan.name,
-      admin.name,
-      reason
-    );
+    // Send email notification to the association owner (only if admin is deleting)
+    if (isAdmin) {
+      const emailService = new EmailService();
+      await emailService.sendPlanDeletionEmail(
+        associationOwner.email,
+        associationOwner.name,
+        plan.name,
+        user.name,
+        reason
+      );
+    }
 
     return { success: true };
   } catch (error) {
