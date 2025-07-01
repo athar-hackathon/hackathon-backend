@@ -104,7 +104,9 @@ export const ReviewRepository: IReviewRepository = {
     });
     return count;
   },
-  findAll: function (): unknown {
-    throw new Error("Function not implemented.");
+
+  async findAll() {
+    const reviews = await db.review.findAll();
+    return reviews.map((review: Model) => review.get() as Review);
   }
 }; 

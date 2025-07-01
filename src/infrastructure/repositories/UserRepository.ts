@@ -35,5 +35,8 @@ export const UserRepository: IUserRepository = {
     });
     return users.map((user: Model) => user.get() as User);
   },
-  findAll: undefined
+  async findAll() {
+    const users = await db.user.findAll();
+    return users.map((user: Model) => user.get() as User);
+  },
 };

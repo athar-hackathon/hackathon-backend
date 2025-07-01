@@ -33,12 +33,14 @@ export interface AdminStats {
     name: string;
     averageRating: number;
     totalReviews: number;
+    image_url?: string;
   }>;
   bottomRatedAssociations: Array<{
     id: string;
     name: string;
     averageRating: number;
     totalReviews: number;
+    image_url?: string;
   }>;
   totalReviews: number;
   averagePlatformRating: number;
@@ -102,7 +104,8 @@ export const GetAdminStats = (
         id: String(association.id),
         name: association.name,
         averageRating,
-        totalReviews: associationReviews.length
+        totalReviews: associationReviews.length,
+        image_url: association.image_url
       };
     }).filter(assoc => assoc.totalReviews > 0);
     
