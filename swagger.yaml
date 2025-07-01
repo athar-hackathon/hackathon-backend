@@ -12,30 +12,57 @@ paths:
         required: true
         content:
           application/json:
-            schema: 
+            schema:
               type: object
               properties:
                 email:
                   type: string
-                password: 
-                  type:string
-                required:
-                  - email
-                  - password
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "password123"
+              required:
+                - email
+                - password
       responses:
-              '200':
-                description: Login successful
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        email:
-                          type: string
-                        message:
-                          type: string
-              '401':
-                description: Invalid credentials
+        '201':
+          description: Login Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "user-uuid"
+                      email:
+                        type: string
+                        example: "user@example.com"
+                      name:
+                        type: string
+                        example: "John Doe"
+                      profilePicture:
+                        type: string
+                        example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+                      token:
+                        type: string
+                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  message:
+                    type: string
+                    example: "Login Successful"
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid credentials"
 
   /api/auth/register:
     post:
@@ -63,15 +90,40 @@ paths:
                   enum:
                     - MALE
                     - FEMALE
+                role:
+                  type: string
+                  enum:
+                    - volunteer
+                    - associationOwner
                 country:
                   type: string
                 city:
                   type: string
                 profilePicture:
                   type: string
+                associationData:
+                  type: object
+                  description: Required when role is 'associationOwner'
+                  properties:
+                    name:
+                      type: string
+                      example: "Green Earth Association"
+                    description:
+                      type: string
+                      example: "An environmental protection organization"
+                  required:
+                    - name
+                    - description
               required:
                 - email
                 - password
+                - name
+                - age
+                - gender
+                - country
+                - city
+                - profilePicture
+                - role
       responses:
         '201':
           description: User created successfully
@@ -80,10 +132,37 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  email:
-                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "550e8400-e29b-41d4-a716-446655440000"
+                      email:
+                        type: string
+                        example: "user@example.com"
+                      name:
+                        type: string
+                        example: "John Doe"
+                      role:
+                        type: string
+                        example: "associationOwner"
+                  association:
+                    type: object
+                    description: Present when role is 'associationOwner'
+                    properties:
+                      id:
+                        type: string
+                        example: "123e4567-e89b-12d3-a456-426614174000"
+                      name:
+                        type: string
+                        example: "Green Earth Association"
+                      description:
+                        type: string
+                        example: "An environmental protection organization"
+                      owner_id:
+                        type: string
+                        example: "550e8400-e29b-41d4-a716-446655440000"
         '500':
           description: Server error
 
@@ -266,3 +345,81 @@ paths:
                           type: array
                           items:
                             type: string
+
+  /api/association/{id}:
+    get:
+      summary: Get association by ID
+      tags:
+        - Association
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Association ID
+      responses:
+        '200':
+          description: Association found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '404':
+          description: Association not found
+
+  /api/association:
+    get:
+      summary: Get all associations
+      tags:
+        - Association
+      responses:
+        '200':
+          description: List of associations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Association'
+
+  /api/association/me:
+    get:
+      summary: Get my association (authorized)
+      tags:
+        - Association
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Your association
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '401':
+          description: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        name:
+          type: string
+          example: "Green Earth Association"
+        description:
+          type: string
+          example: "An environmental protection organization"
+        owner_id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"

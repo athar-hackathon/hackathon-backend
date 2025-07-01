@@ -24,7 +24,7 @@ const UserModel = (
     city: { type: DataTypes.STRING, allowNull: true },
     gender: { type: DataTypes.ENUM("MALE", "FEMALE"), allowNull: true },
     age: { type: DataTypes.INTEGER, allowNull: true },
-    profilePicture: { type: DataTypes.TEXT, allowNull: true },
+    profilePicture: { type: DataTypes.TEXT, allowNull: true, defaultValue: "irtiqaa.png" },
     isActive: {type: DataTypes.BOOLEAN, allowNull: false},
   });
   return User;

@@ -22,6 +22,7 @@ const AssociationModel = (
     facebook_url: { type: DataTypes.STRING, allowNull: true},
     twitter_url: { type: DataTypes.STRING, allowNull: true},
     owner_id: { type: DataTypes.UUID, allowNull: false},
+    image_url: { type: DataTypes.STRING, allowNull: true, defaultValue: "irtiqaa.png"},
   });
   return Association;
 };
