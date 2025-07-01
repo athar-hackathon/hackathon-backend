@@ -3,53 +3,53 @@ import { db } from '../sequelize';
 export const seedDestinations = async (locations: any[]) => {
   const destinations = [
     {
-      name: 'Paris Community Center',
-      description: 'A vibrant community center in the heart of Paris offering various volunteer opportunities.',
+      name: 'Centre Communautaire d’Alger',
+      description: 'Un centre communautaire dynamique au cœur d’Alger offrant diverses opportunités de bénévolat.',
       location_id: locations[0]?.id
     },
     {
-      name: 'Lyon Youth Center',
-      description: 'Modern youth center in Lyon focused on education and skill development.',
+      name: 'Maison des Jeunes Oran',
+      description: 'Centre moderne à Oran axé sur l’éducation et le développement des compétences.',
       location_id: locations[1]?.id
     },
     {
-      name: 'Marseille Beach Cleanup Site',
-      description: 'Coastal area in Marseille where environmental volunteers work to keep beaches clean.',
+      name: 'Site de Nettoyage de Plage Annaba',
+      description: 'Zone côtière à Annaba où les bénévoles œuvrent pour la propreté des plages.',
       location_id: locations[2]?.id
     },
     {
-      name: 'Toulouse University Campus',
-      description: 'University campus in Toulouse where educational programs and mentoring take place.',
+      name: 'Campus Universitaire Constantine',
+      description: 'Campus universitaire à Constantine où se déroulent des programmes éducatifs.',
       location_id: locations[3]?.id
     },
     {
-      name: 'Nice Elderly Care Facility',
-      description: 'Care facility in Nice providing services and companionship to elderly residents.',
+      name: 'Maison de Retraite Tlemcen',
+      description: 'Établissement à Tlemcen offrant des services et de la compagnie aux personnes âgées.',
       location_id: locations[4]?.id
     },
     {
-      name: 'Bordeaux Animal Shelter',
-      description: 'Animal shelter in Bordeaux caring for abandoned and rescued animals.',
+      name: 'Refuge Animalier de Blida',
+      description: 'Refuge à Blida pour animaux abandonnés et secourus.',
       location_id: locations[5]?.id
     },
     {
-      name: 'Lille Community Garden',
-      description: 'Community garden in Lille promoting sustainable agriculture and green spaces.',
+      name: 'Jardin Communautaire de Bejaia',
+      description: 'Jardin communautaire à Bejaia promouvant l’agriculture durable.',
       location_id: locations[6]?.id
     },
     {
-      name: 'Dijon Health Clinic',
-      description: 'Health clinic in Dijon providing medical services and health education.',
+      name: 'Clinique de Santé Mascara',
+      description: 'Clinique à Mascara offrant des services médicaux et de l’éducation à la santé.',
       location_id: locations[7]?.id
     },
     {
-      name: 'Annecy Nature Reserve',
-      description: 'Nature reserve in Annecy focused on environmental conservation and wildlife protection.',
+      name: 'Réserve Naturelle Mostaganem',
+      description: 'Réserve à Mostaganem axée sur la conservation de l’environnement.',
       location_id: locations[8]?.id
     },
     {
-      name: 'Nantes Technology Hub',
-      description: 'Technology hub in Nantes offering digital literacy and tech education programs.',
+      name: 'Pôle Technologique de Setif',
+      description: 'Pôle technologique à Setif offrant des programmes d’éducation numérique.',
       location_id: locations[9]?.id
     }
   ];

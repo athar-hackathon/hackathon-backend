@@ -3,84 +3,84 @@ import { db } from '../sequelize';
 export const seedLocations = async () => {
   const locations = [
     {
-      longitude: 2.3522,
-      latitude: 48.8566,
-      country: 'France',
-      state: 'Île-de-France',
-      city: 'Paris',
-      address: '1 Place de la Concorde, 75001 Paris'
+      longitude: 3.0588,
+      latitude: 36.7538,
+      country: 'Algeria',
+      state: 'Algiers Province',
+      city: 'Algiers',
+      address: 'Place des Martyrs, Algiers'
     },
     {
-      longitude: 4.8357,
-      latitude: 45.7640,
-      country: 'France',
-      state: 'Auvergne-Rhône-Alpes',
-      city: 'Lyon',
-      address: 'Place Bellecour, 69002 Lyon'
+      longitude: -0.6337,
+      latitude: 35.6971,
+      country: 'Algeria',
+      state: 'Oran Province',
+      city: 'Oran',
+      address: 'Boulevard de l’ALN, Oran'
     },
     {
-      longitude: 5.3698,
-      latitude: 43.2965,
-      country: 'France',
-      state: 'Provence-Alpes-Côte d\'Azur',
-      city: 'Marseille',
-      address: 'Vieux Port, 13001 Marseille'
+      longitude: 6.6147,
+      latitude: 36.9040,
+      country: 'Algeria',
+      state: 'Annaba Province',
+      city: 'Annaba',
+      address: 'Cours de la Révolution, Annaba'
     },
     {
-      longitude: 1.4442,
-      latitude: 43.6047,
-      country: 'France',
-      state: 'Occitanie',
-      city: 'Toulouse',
-      address: 'Place du Capitole, 31000 Toulouse'
+      longitude: 7.7667,
+      latitude: 36.3650,
+      country: 'Algeria',
+      state: 'Constantine Province',
+      city: 'Constantine',
+      address: 'Pont Sidi M’Cid, Constantine'
     },
     {
-      longitude: 7.2619,
-      latitude: 43.7102,
-      country: 'France',
-      state: 'Provence-Alpes-Côte d\'Azur',
-      city: 'Nice',
-      address: 'Promenade des Anglais, 06000 Nice'
+      longitude: -1.3167,
+      latitude: 35.0167,
+      country: 'Algeria',
+      state: 'Tlemcen Province',
+      city: 'Tlemcen',
+      address: 'Place Emir Abdelkader, Tlemcen'
     },
     {
-      longitude: -0.5792,
-      latitude: 44.8378,
-      country: 'France',
-      state: 'Nouvelle-Aquitaine',
-      city: 'Bordeaux',
-      address: 'Place de la Bourse, 33000 Bordeaux'
+      longitude: 2.8787,
+      latitude: 36.4556,
+      country: 'Algeria',
+      state: 'Blida Province',
+      city: 'Blida',
+      address: 'Rue de la Gare, Blida'
     },
     {
-      longitude: 3.0573,
-      latitude: 50.6292,
-      country: 'France',
-      state: 'Hauts-de-France',
-      city: 'Lille',
-      address: 'Grand Place, 59000 Lille'
+      longitude: 5.0637,
+      latitude: 36.7509,
+      country: 'Algeria',
+      state: 'Bejaia Province',
+      city: 'Bejaia',
+      address: 'Avenue de l’Indépendance, Bejaia'
     },
     {
-      longitude: 5.0415,
-      latitude: 47.3220,
-      country: 'France',
-      state: 'Bourgogne-Franche-Comté',
-      city: 'Dijon',
-      address: 'Place de la Libération, 21000 Dijon'
+      longitude: 1.3317,
+      latitude: 35.6971,
+      country: 'Algeria',
+      state: 'Mascara Province',
+      city: 'Mascara',
+      address: 'Place 1er Novembre, Mascara'
     },
     {
-      longitude: 6.1432,
-      latitude: 46.2044,
-      country: 'France',
-      state: 'Auvergne-Rhône-Alpes',
-      city: 'Annecy',
-      address: 'Lac d\'Annecy, 74000 Annecy'
+      longitude: 0.1403,
+      latitude: 35.5556,
+      country: 'Algeria',
+      state: 'Mostaganem Province',
+      city: 'Mostaganem',
+      address: 'Place de l’Indépendance, Mostaganem'
     },
     {
-      longitude: -1.5536,
-      latitude: 47.2184,
-      country: 'France',
-      state: 'Pays de la Loire',
-      city: 'Nantes',
-      address: 'Place du Commerce, 44000 Nantes'
+      longitude: 4.5418,
+      latitude: 35.5556,
+      country: 'Algeria',
+      state: 'Setif Province',
+      city: 'Setif',
+      address: 'Avenue de l’ALN, Setif'
     }
   ];
 

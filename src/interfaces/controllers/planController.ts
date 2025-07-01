@@ -21,6 +21,7 @@ import { getPendingApplicationsForAssociation } from "@/src/application/use-case
 import { acceptApplication } from "@/src/application/use-cases/AcceptApplication";
 import { rejectApplication } from "@/src/application/use-cases/RejectApplication";
 import { UserPlanRepository } from "@/src/infrastructure/repositories/UserPlanRepository";
+import { ReviewRepository } from "../../infrastructure/repositories/ReviewRepository";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
