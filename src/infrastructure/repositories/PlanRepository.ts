@@ -312,7 +312,7 @@ export const PlanRepository: IPlanRepository = {
     const popular = await db.user_plan.findAll({
       attributes: ['planId', [db.Sequelize.fn('COUNT', db.Sequelize.col('userId')), 'joinCount']],
       group: ['planId'],
-      order: [[db.Sequelize.literal('joinCount'), 'DESC']],
+      order: [[db.Sequelize.fn('COUNT', db.Sequelize.col('userId')), 'DESC']],
       limit,
     });
     const planIds = popular.map((row: any) => row.planId);

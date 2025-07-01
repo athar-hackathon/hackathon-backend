@@ -461,3 +461,22 @@ export const rejectApplicationController = async (req: AuthRequest, res: Respons
     });
   }
 };
+
+// Controller to get the most popular plans
+export const getMostPopularPlansController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const limit = 3;
+    const plans = await PlanRepository.findMostPopular({ limit });
+    res.status(200).json({
+      success: true,
+      data: plans,
+      message: "Most popular plans retrieved successfully"
+    });
+  } catch (error) {
+    console.error("Error getting most popular plans:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Internal server error"
+    });
+  }
+};

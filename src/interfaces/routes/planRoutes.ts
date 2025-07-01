@@ -24,6 +24,7 @@ router.get("/category/:categoryName", getPlansByCategoryNameController);
 // Filter plans by categories and fees
 router.get("/filter", filterPlans);
 
+
 router.get("/:id", getPlanByIdController);
 
 router.post("/create", validate(planSchema), create);

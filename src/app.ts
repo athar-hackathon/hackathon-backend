@@ -21,11 +21,7 @@ const  app = express();
 
 // CORS middleware should be first
 const corsOptions = {
-    origin: [
-      "http://localhost:3000",
-      "https://oxyjeunes-dashboard.vercel.app",
-      "https://oxyjeunes-dashboard-git-main-akram-sas-projects.vercel.app"
-    ],
+    origin: '*',
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
