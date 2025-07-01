@@ -60,5 +60,47 @@ export const getMyProfile = async (req: Request, res: Response) => {
   if (dbUser.profilePicture) {
     dbUser.profilePicture = getBase64Image(dbUser.profilePicture);
   }
+  if (dbUser.password) {
+    // Create a new object without the password field instead of using delete
+    const { password: _, ...userWithoutPassword } = dbUser;
+    res.json(userWithoutPassword);
+    return;
+  }
   res.json(dbUser);
+};
+
+export const updateMyProfile = async (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const userId = user?.id as string | undefined;
+  if (!userId) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const updateData = req.body;
+  // Prevent updating email or id
+  delete updateData.email;
+  delete updateData.id;
+  const updatedUser = await UserRepository.update(userId, updateData);
+  if (!updatedUser) {
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+  // Remove password from response
+  const { password: _, ...userWithoutPassword } = updatedUser;
+  res.json({ success: true, data: userWithoutPassword, message: "Profile updated successfully" });
+};
+
+export const deleteMyProfile = async (req: Request, res: Response) => {
+  const user = (req as any).user;
+  const userId = user?.id as string | undefined;
+  if (!userId) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const deleted = await UserRepository.delete(userId);
+  if (!deleted) {
+    res.status(404).json({ error: "User not found or already deleted" });
+    return;
+  }
+  res.json({ success: true, message: "User profile deleted successfully" });
 };

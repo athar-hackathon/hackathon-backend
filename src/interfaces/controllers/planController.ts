@@ -465,7 +465,7 @@ export const rejectApplicationController = async (req: AuthRequest, res: Respons
 // Controller to get the most popular plans
 export const getMostPopularPlansController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
+    const limit = 3;
     const plans = await PlanRepository.findMostPopular({ limit });
     res.status(200).json({
       success: true,

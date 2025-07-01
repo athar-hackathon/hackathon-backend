@@ -39,4 +39,8 @@ export const UserRepository: IUserRepository = {
     const users = await db.user.findAll();
     return users.map((user: Model) => user.get() as User);
   },
+  async delete(id: string) {
+    const deletedCount = await db.user.destroy({ where: { id } });
+    return deletedCount > 0;
+  },
 };
