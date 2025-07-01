@@ -28,3 +28,11 @@ export const verifyTokenMiddleware = (req: AuthRequest, res: Response, next: Nex
     return;
   }
 };
+
+export const isAdminMiddleware = (req: AuthRequest, res: Response, next: NextFunction): void => {
+  if (!req.user || req.user.role !== 'admin') {
+    res.status(403).json({ message: 'Forbidden: Admins only' });
+    return;
+  }
+  next();
+};

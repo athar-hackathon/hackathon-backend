@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { verifyTokenMiddleware } from '../middlewares/authMiddleware';
+import { verifyTokenMiddleware, isAdminMiddleware } from '../middlewares/authMiddleware';
 import { 
   getPendingAssociationsController, 
   approveAssociationController, 
@@ -16,7 +16,7 @@ const router = Router();
 router.use(verifyTokenMiddleware);
 
 // Get admin statistics
-router.get('/stats', getAdminStatsController);
+router.get('/stats', isAdminMiddleware, getAdminStatsController);
 
 // Get pending associations for approval
 router.get('/associations/pending', getPendingAssociationsController);

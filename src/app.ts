@@ -17,22 +17,26 @@ import session from 'express-session';
 import associationRoutes from "@/src/interfaces/routes/associationRoutes";
 
 const  app = express();
+
+// CORS middleware should be first
+const corsOptions = {
+    origin: [
+      "http://localhost:3000",
+      "https://oxyjeunes-dashboard.vercel.app",
+      "https://oxyjeunes-dashboard-git-main-akram-sas-projects.vercel.app"
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  };
+app.use(cors(corsOptions));
+
 app.use(express.json())
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 setupSwagger(app);
-const corsOptions = {
-    origin: [
-      ...(Array.isArray(config.cors.developmentMode) ? config.cors.developmentMode : [config.cors.developmentMode]),
-      ...(Array.isArray(config.cors.deploymentMode) ? config.cors.deploymentMode : [config.cors.deploymentMode])
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  };
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json())
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

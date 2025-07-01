@@ -72,7 +72,16 @@ export const UserPlanRepository: IUserPlanRepository = {
     });
     return application ? (application.get() as UserPlan) : null;
   },
-  findByAssociationId: function (associationId: string): unknown {
-    throw new Error("Function not implemented.");
+
+  async findByAssociationId(associationId: string): Promise<UserPlan[]> {
+    const applications = await db.user_plan.findAll({
+      include: [{
+        model: db.plan,
+        as: 'plan',
+        where: { associationId },
+        attributes: []
+      }]
+    });
+    return applications.map((app: Model) => app.get() as UserPlan);
   }
 }; 
