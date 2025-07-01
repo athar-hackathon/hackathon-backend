@@ -14,7 +14,6 @@ export const PlanRepository: IPlanRepository = {
 
   async findAll(): Promise<Plan[]> {
     const plans = await db.plan.findAll({
-      attributes: ['id', 'name', 'totalFees', 'startDate', 'endDate'],
       include: [{
         model: db.destination,
         as: 'destinations',

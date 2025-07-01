@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { registerUser, getMyProfile } from "@/src/interfaces/controllers/userController";
+import { getMyProfile } from "@/src/interfaces/controllers/userController";
 import { verifyTokenMiddleware } from "@/src/interfaces/middlewares/authMiddleware";
 import { login, register } from "../controllers/authController";
 import { validate } from "../middlewares/validate";
@@ -10,7 +10,7 @@ import { userSchema } from "../validators/userSchema";
 
 const router = Router();
 
-router.post("/register", registerUser);
+router.post("/register", register);
 router.post("/login", login);
 router.get("/me", verifyTokenMiddleware, getMyProfile);
 

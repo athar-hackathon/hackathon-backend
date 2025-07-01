@@ -28,6 +28,7 @@ const PlanModel = (
     totalFees: { type: DataTypes.INTEGER, allowNull: true, },
     category_id: { type: DataTypes.UUID, allowNull: false},
     associationId: { type: DataTypes.UUID, allowNull: false},
+    image_url: { type: DataTypes.TEXT, allowNull: true},
   });
   return Plan;
 };
