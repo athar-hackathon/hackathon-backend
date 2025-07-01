@@ -571,6 +571,38 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Plan'
+  /api/plan/popular:
+    get:
+      summary: Get most popular plans
+      tags: [Plans]
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Maximum number of popular plans to return (default 10)
+      responses:
+        '200':
+          description: Most popular plans retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
+                  message:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/plan/{id}:
     get:
       summary: Get plan by ID
