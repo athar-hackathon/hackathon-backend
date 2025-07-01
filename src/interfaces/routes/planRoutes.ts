@@ -9,7 +9,8 @@ import {
   deletePlanController,
   getPendingApplicationsController,
   acceptApplicationController,
-  rejectApplicationController
+  rejectApplicationController,
+  applyToPlanController
 } from "../controllers/planController";
 import { validate } from "../middlewares/validate";
 import { planSchema } from "../validators/planSchema";
@@ -37,5 +38,7 @@ router.delete("/:id", verifyTokenMiddleware, deletePlanController);
 router.get("/applications/pending", verifyTokenMiddleware, getPendingApplicationsController);
 router.put("/applications/:applicationId/accept", verifyTokenMiddleware, acceptApplicationController);
 router.put("/applications/:applicationId/reject", verifyTokenMiddleware, rejectApplicationController);
+
+router.post("/apply",verifyTokenMiddleware, applyToPlanController);
 
 export default router;

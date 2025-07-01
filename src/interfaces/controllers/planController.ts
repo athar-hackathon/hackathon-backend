@@ -22,6 +22,7 @@ import { acceptApplication } from "@/src/application/use-cases/AcceptApplication
 import { rejectApplication } from "@/src/application/use-cases/RejectApplication";
 import { UserPlanRepository } from "@/src/infrastructure/repositories/UserPlanRepository";
 import { ReviewRepository } from "../../infrastructure/repositories/ReviewRepository";
+import { applyToPlan } from "@/src/application/use-cases/ApplyToPlan";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
@@ -479,4 +480,18 @@ export const getMostPopularPlansController = async (req: Request, res: Response)
       message: error instanceof Error ? error.message : "Internal server error"
     });
   }
+};
+
+export const applyToPlanController = async (req: Request, res: Response): Promise<void> => {
+  const { userId, planId } = req.body;
+  if (!userId || !planId) {
+    res.status(400).json({ success: false, message: "userId and planId are required" });
+    return;
+  }
+  const result = await applyToPlan(UserPlanRepository, PlanRepository, UserRepository)(userId, planId);
+  if (!result.success) {
+    res.status(400).json({ success: false, message: result.error });
+    return;
+  }
+  res.status(201).json({ success: true, data: result.application, message: "Applied to plan successfully" });
 };
