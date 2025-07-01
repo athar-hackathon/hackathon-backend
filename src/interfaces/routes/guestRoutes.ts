@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { submitGuestVolunteerFormController } from '../controllers/guestController';
 import { validate } from '../middlewares/validate';
 import { guestVolunteerFormSchema } from '../validators/guestVolunteerSchema';
-import { getAllPlansController, getMostPopularPlansController } from '../controllers/planController';
+import { getAllPlansController, getPlanByIdController , getMostPopularPlansController } from '../controllers/planController';
 
 const router = Router();
 
@@ -10,5 +10,6 @@ const router = Router();
 router.post('/volunteer', validate(guestVolunteerFormSchema), submitGuestVolunteerFormController);
 router.get("/plans", getAllPlansController);
 router.get("/plans/popular", getMostPopularPlansController);
+router.get("/plans/:id", getPlanByIdController);
 
 export default router;
