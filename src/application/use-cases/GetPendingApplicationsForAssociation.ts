@@ -27,12 +27,19 @@ export const getPendingApplicationsForAssociation = (
     // Get all plans for this association
     const allPlans = await planRepo.findByAssociationId(String(associationId));
     
-    // Get pending applications for all these plans
+    // Get pending applications for all these plans with plan details
     const pendingApplications = [];
     
     for (const plan of allPlans) {
       const planApplications = await userPlanRepo.getPendingApplications(String(plan.id));
-      pendingApplications.push(...planApplications);
+      
+      // For each application, get the full details including plan information
+      for (const application of planApplications) {
+        const fullApplication = await userPlanRepo.getApplicationById(application.id);
+        if (fullApplication) {
+          pendingApplications.push(fullApplication);
+        }
+      }
     }
 
     return { success: true, applications: pendingApplications };

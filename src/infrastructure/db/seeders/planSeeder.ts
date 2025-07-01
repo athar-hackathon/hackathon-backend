@@ -3,8 +3,8 @@ import { db } from '../sequelize';
 export const seedPlans = async (associations: any[], categories: any[], destinations: any[]) => {
   const plans = [
     {
-      name: 'Beach Cleanup Initiative',
-      description: 'Join us for a day of beach cleanup to protect marine life and keep our coasts beautiful.',
+      name: "Nettoyage de Plage Annaba",
+      description: "Participez à une journée de nettoyage de plage à Annaba pour protéger la faune marine.",
       startDate: new Date('2024-03-15'),
       endDate: new Date('2024-03-15'),
       volunteerNumber: 20,
@@ -12,13 +12,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[2]?.id, // Marseille Beach
+      destinationId: destinations[2]?.id, // Annaba
       category_id: categories[0]?.id, // Environment
-      associationId: associations[0]?.id // Green Earth Initiative
+      associationId: associations[0]?.id // Bniadm
     },
     {
-      name: 'Youth Mentoring Program',
-      description: 'Mentor young students in academic subjects and life skills development.',
+      name: "Mentorat Jeunesse Oran",
+      description: "Mentorez des jeunes à Oran dans les matières scolaires et le développement personnel.",
       startDate: new Date('2024-03-20'),
       endDate: new Date('2024-06-20'),
       volunteerNumber: 15,
@@ -26,13 +26,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[1]?.id, // Lyon Youth Center
+      destinationId: destinations[1]?.id, // Oran
       category_id: categories[1]?.id, // Education
-      associationId: associations[1]?.id // Youth Education Foundation
+      associationId: associations[1]?.id // Jeunesse Algérienne
     },
     {
-      name: 'Health Awareness Campaign',
-      description: 'Help spread awareness about preventive healthcare in local communities.',
+      name: "Campagne de Sensibilisation Santé",
+      description: "Aidez à sensibiliser sur la santé préventive dans les communautés locales.",
       startDate: new Date('2024-04-01'),
       endDate: new Date('2024-04-30'),
       volunteerNumber: 25,
@@ -40,13 +40,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[7]?.id, // Dijon Health Clinic
+      destinationId: destinations[7]?.id, // Mascara
       category_id: categories[2]?.id, // Health
-      associationId: associations[2]?.id // Community Health Alliance
+      associationId: associations[2]?.id // Santé Communautaire Algérie
     },
     {
-      name: 'Animal Shelter Support',
-      description: 'Help care for rescued animals and assist with daily shelter operations.',
+      name: "Soutien Refuge Animalier",
+      description: "Aidez à soigner les animaux secourus et à gérer le refuge de Blida.",
       startDate: new Date('2024-03-25'),
       endDate: new Date('2024-12-25'),
       volunteerNumber: 10,
@@ -54,13 +54,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[5]?.id, // Bordeaux Animal Shelter
+      destinationId: destinations[5]?.id, // Blida
       category_id: categories[4]?.id, // Animal Welfare
-      associationId: associations[3]?.id // Animal Rescue Network
+      associationId: associations[3]?.id // Réseau de Sauvetage Animal
     },
     {
-      name: 'Community Garden Maintenance',
-      description: 'Help maintain our community garden and teach sustainable gardening practices.',
+      name: "Entretien Jardin Communautaire",
+      description: "Aidez à entretenir le jardin communautaire de Bejaia et à enseigner des pratiques durables.",
       startDate: new Date('2024-04-10'),
       endDate: new Date('2024-10-10'),
       volunteerNumber: 12,
@@ -68,13 +68,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[6]?.id, // Lille Community Garden
+      destinationId: destinations[6]?.id, // Bejaia
       category_id: categories[0]?.id, // Environment
-      associationId: associations[0]?.id // Green Earth Initiative
+      associationId: associations[0]?.id // Bniadm
     },
     {
-      name: 'Elderly Companionship Program',
-      description: 'Provide companionship and support to elderly residents in our care facility.',
+      name: "Programme Compagnonnage Aînés",
+      description: "Offrez de la compagnie et du soutien aux personnes âgées à Tlemcen.",
       startDate: new Date('2024-03-30'),
       endDate: new Date('2024-12-30'),
       volunteerNumber: 8,
@@ -82,13 +82,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[4]?.id, // Nice Elderly Care
+      destinationId: destinations[4]?.id, // Tlemcen
       category_id: categories[8]?.id, // Elderly Care
-      associationId: associations[6]?.id // Elderly Care Foundation
+      associationId: associations[6]?.id // Fondation Aînés
     },
     {
-      name: 'Digital Literacy Workshop',
-      description: 'Teach basic computer skills and digital literacy to community members.',
+      name: "Atelier de Littératie Numérique",
+      description: "Enseignez les bases de l'informatique et la littératie numérique à Setif.",
       startDate: new Date('2024-04-15'),
       endDate: new Date('2024-05-15'),
       volunteerNumber: 18,
@@ -96,13 +96,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[9]?.id, // Nantes Technology Hub
+      destinationId: destinations[9]?.id, // Setif
       category_id: categories[6]?.id, // Technology
-      associationId: associations[5]?.id // Tech for Good
+      associationId: associations[5]?.id // Tech pour Tous
     },
     {
-      name: 'Nature Conservation Project',
-      description: 'Participate in wildlife monitoring and habitat restoration activities.',
+      name: "Projet Conservation Naturelle",
+      description: "Participez à la surveillance de la faune et à la restauration des habitats à Mostaganem.",
       startDate: new Date('2024-05-01'),
       endDate: new Date('2024-08-01'),
       volunteerNumber: 15,
@@ -110,13 +110,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[8]?.id, // Annecy Nature Reserve
+      destinationId: destinations[8]?.id, // Mostaganem
       category_id: categories[0]?.id, // Environment
-      associationId: associations[0]?.id // Green Earth Initiative
+      associationId: associations[0]?.id // Bniadm
     },
     {
-      name: 'Sports for Disabled Youth',
-      description: 'Help organize and support sports activities for disabled youth.',
+      name: "Sports pour Jeunes Handicapés",
+      description: "Aidez à organiser et soutenir des activités sportives pour les jeunes handicapés à Alger.",
       startDate: new Date('2024-04-20'),
       endDate: new Date('2024-07-20'),
       volunteerNumber: 20,
@@ -124,13 +124,13 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[0]?.id, // Paris Community Center
+      destinationId: destinations[0]?.id, // Algiers
       category_id: categories[7]?.id, // Youth Development
-      associationId: associations[9]?.id // Sports for All
+      associationId: associations[9]?.id // Sports pour Tous
     },
     {
-      name: 'Emergency Response Training',
-      description: 'Learn and help teach emergency response skills for disaster preparedness.',
+      name: "Formation Réponse d'Urgence",
+      description: "Apprenez et enseignez les compétences de réponse d'urgence à Constantine.",
       startDate: new Date('2024-06-01'),
       endDate: new Date('2024-06-30'),
       volunteerNumber: 30,
@@ -138,9 +138,9 @@ export const seedPlans = async (associations: any[], categories: any[], destinat
       isActive: true,
       isPaid: false,
       totalFees: '0',
-      destinationId: destinations[3]?.id, // Toulouse University
+      destinationId: destinations[3]?.id, // Constantine
       category_id: categories[9]?.id, // Disaster Relief
-      associationId: associations[7]?.id // Disaster Relief Team
+      associationId: associations[7]?.id // Équipe Secours Algérie
     }
   ];
 
