@@ -1,0 +1,118 @@
+// Prisma schema for hackathon-backend
+// Run: npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  password       String
+  name           String
+  role           String
+  isActive       Boolean  @default(true)
+  gender         String?
+  age            Int?
+  profilePicture String?
+  city           String?
+  country        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  associations   Association[] @relation("UserAssociations")
+  plans          Plan[]
+}
+
+model Association {
+  id            String   @id @default(uuid())
+  name          String
+  description   String
+  intagram_url  String?
+  facebook_url  String?
+  twitter_url   String?
+  owner         User     @relation("UserAssociations", fields: [owner_id], references: [id])
+  owner_id      String
+  image_url     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Plan {
+  id                     String   @id @default(uuid())
+  name                   String
+  description            String
+  startDate              DateTime
+  endDate                DateTime
+  volunteerNumber        Int
+  appliedVolunteerNumber Int
+  isActive               Boolean  @default(true)
+  isPaid                 Boolean
+  totalFees              String
+  destinationId          String
+  category_id            String
+  association            Association @relation(fields: [associationId], references: [id])
+  associationId          String
+  image_url              String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  fees                   Fees[]
+  category               Category @relation(fields: [category_id], references: [id])
+  destinations           DestinationPlanModel[]
+}
+
+model Fees {
+  id        String   @id @default(uuid())
+  name      String
+  fees      String
+  plan      Plan     @relation(fields: [plan_id], references: [id])
+  plan_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  plans     Plan[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Destination {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  location    Location @relation(fields: [location_id], references: [id])
+  location_id String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  destinationPlans DestinationPlanModel[]
+}
+
+model Location {
+  id        String   @id @default(uuid())
+  longitude Float
+  latitude  Float
+  country   String?
+  state     Int?
+  city      Int?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  destinations Destination[]
+}
+
+model DestinationPlanModel {
+  id             String   @id @default(uuid())
+  destination    Destination @relation(fields: [destination_id], references: [id])
+  destination_id String
+  plan           Plan        @relation(fields: [plan_id], references: [id])
+  plan_id        String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+} 

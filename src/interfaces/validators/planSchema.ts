@@ -9,7 +9,9 @@ export const planSchema = z.object({
     volunteerNumber: z.number(),
     destinationId: z.string(),
     category_id: z.string(),
-    fees: z.array(feeSchema)
+    fees: z.array(feeSchema),
+    totalFees: z.number(),
+    isPaid: z.boolean(),
 })
 
 export type PlanInput = z.infer<typeof planSchema>

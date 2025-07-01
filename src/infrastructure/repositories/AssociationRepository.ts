@@ -47,5 +47,26 @@ export const AssociationRepository: IAssociationRepository = {
       where: { owner_id: ownerId }
     });
     return associations.map((association: Model) => association.get() as Association);
+  },
+
+  async findPendingWithOwner(): Promise<any[]> {
+    const associations = await db.association.findAll({
+      include: [{ 
+        model: db.user, 
+        as: 'user', 
+        attributes: ['id', 'name'],
+        where: { 
+          isActive: false,
+          role: 'associationOwner'
+        }
+      }]
+    });
+    return associations.map((association: any) => {
+      const data = association.get();
+      return {
+        ...data,
+        owner: data.user ? { id: data.user.id, name: data.user.name } : null
+      };
+    });
   }
 };

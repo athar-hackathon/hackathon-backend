@@ -82,4 +82,4 @@ export const getAssociationStatsController = async (req: Request, res: Response)
       message: error instanceof Error ? error.message : 'Internal server error'
     });
   }
-}; 
+};
