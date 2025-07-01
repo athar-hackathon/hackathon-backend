@@ -27,7 +27,6 @@ export interface IPlanRepository {
     location?: string;
     latitude?: number;
     longitude?: number;
-    radius?: number;
   }): Promise<Plan[]>;
   findByCategories(categories: string[]): Promise<Plan[]>;
   findByCategoryName(categoryName: string): Promise<Plan[]>;

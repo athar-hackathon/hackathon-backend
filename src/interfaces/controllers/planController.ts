@@ -12,6 +12,7 @@ import { createPlan } from "@/src/application/use-cases/CreatePlan";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { getPlansByCategoryName } from "@/src/application/use-cases/GetPlansByCategoryName";
 import { CategoryRepository } from "@/src/infrastructure/repositories/CategoryRepository";
+import { getBase64Image } from "@/src/infrastructure/services/getBase64Image";
 
 function isErrorResult(result: any): result is { error: string } {
   return result && typeof result === "object" && "error" in result;
@@ -131,7 +132,12 @@ export const getAllPlansController = async (
 ): Promise<void> => {
   try {
     const plans = await getAllPlans(PlanRepository)();
+    plans.forEach(p => {
+      if (p.image_url) {
 
+        p.image_url = getBase64Image(p.image_url);
+      }
+    });
     res.status(200).json({
       success: true,
       data: plans,
@@ -161,7 +167,9 @@ export const getPlanByIdController = async (
       });
       return;
     }
-
+    if (plan.image_url) {
+      plan.image_url = getBase64Image(plan.image_url);
+    }
     res.status(200).json({
       success: true,
       data: plan,
@@ -191,7 +199,13 @@ export const getPlansByCategoryNameController = async (
       });
       return;
     }
-
+    if (result.plans) {
+      result.plans.forEach((p: any) => {
+        if (p.image_url) {
+          p.image_url = getBase64Image(p.image_url);
+        }
+      });
+    }
     res.status(200).json({
       success: true,
       data: result.plans,

@@ -7,6 +7,7 @@ type AssociationCreationInput = Omit<Association, "id">;
 
 export const AssociationRepository: IAssociationRepository = {
   async create(data: AssociationCreationInput): Promise<Association> {
+    console.log(data)
     const association = await db.association.create(data);
     return association.get() as Association;
   },

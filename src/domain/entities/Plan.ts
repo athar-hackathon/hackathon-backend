@@ -14,4 +14,5 @@ export interface Plan {
   createdAt?: string;
   updatedAt?: string;
   associationId: string;
+  image_url?: string;
 }
