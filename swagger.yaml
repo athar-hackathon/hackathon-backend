@@ -1630,7 +1630,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/volunteer:
+  /api/guestvolunteer:
     post:
       summary: Submit guest volunteer form
       tags: [Guest]
