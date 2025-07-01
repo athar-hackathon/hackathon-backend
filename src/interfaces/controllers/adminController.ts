@@ -9,21 +9,42 @@ import { GetAdminStats } from '../../application/use-cases/GetAdminStats';
 import { AssociationRepository } from '../../infrastructure/repositories/AssociationRepository';
 import { CategoryRepository } from '../../infrastructure/repositories/CategoryRepository';
 import { ReviewRepository } from '../../infrastructure/repositories/ReviewRepository';
+import { db } from "../../infrastructure/db/sequelize";
 
 export const getPendingAssociationsController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const pendingAssociations = await getPendingAssociations(UserRepository)();
-    
+    // 1. Find all users who are pending association owners
+    const pendingOwners = await db.user.findAll({
+      where: { isActive: false, role: "associationOwner" },
+      attributes: [
+        "id", "email", "password", "name", "age", "gender", "country", "role", "city", "profilePicture"
+      ]
+    });
+
+    // 2. For each user, find their association and format the response
+    const usersWithAssociation = await Promise.all(
+      pendingOwners.map(async (user: any) => {
+        const association = await db.association.findOne({
+          where: { owner_id: user.id },
+          attributes: ["name", "description"]
+        });
+        return {
+          ...user.get(),
+          associationData: association ? association.get() : null
+        };
+      })
+    );
+
     res.status(200).json({
       success: true,
-      data: pendingAssociations,
-      message: 'Pending associations retrieved successfully'
+      data: usersWithAssociation,
+      message: "Pending associations retrieved successfully"
     });
   } catch (error) {
-    console.error('Error getting pending associations:', error);
+    console.error("Error getting pending associations:", error);
     res.status(500).json({
       success: false,
-      message: error instanceof Error ? error.message : 'Internal server error'
+      message: error instanceof Error ? error.message : "Internal server error"
     });
   }
 };

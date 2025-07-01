@@ -7,4 +7,5 @@ export interface IAssociationRepository {
   update(id: string, association: Partial<Association>): Promise<Association | null>;
   delete(id: string): Promise<boolean>;
   findByOwnerId(ownerId: string): Promise<Association[]>;
+  findPendingWithOwner(): Promise<any[]>;
 } 

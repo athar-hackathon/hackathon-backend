@@ -45,6 +45,9 @@ export const PlanRepository: IPlanRepository = {
         model: db.category,
         as: 'category',
         attributes: ['name']
+      }, {
+        model: db.fees,
+        as: 'fees'
       }]
     });
     return plan ? (plan.get() as Plan) : null;
