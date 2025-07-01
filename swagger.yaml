@@ -347,6 +347,49 @@ components:
                 type: string
               message:
                 type: string
+    PendingAssociationUserWithAssociationData:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+          enum: [MALE, FEMALE]
+        country:
+          type: string
+        role:
+          type: string
+          enum: [admin, associationOwner, volunteer]
+        city:
+          type: string
+        profilePicture:
+          type: string
+        associationData:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+      example:
+        email: "volunteer1226@oxyjeunes.com"
+        password: "password123"
+        name: "string"
+        age: 18
+        gender: "MALE"
+        country: "string"
+        role: "associationOwner"
+        city: "string"
+        profilePicture: "string"
+        associationData:
+          name: "sirtik"
+          description: "Irtikaa Association.."
 paths:
   /api/auth/login:
     post:
@@ -474,44 +517,119 @@ paths:
   /api/plan:
     get:
       summary: Get all plans
-      tags: [Plans]
+      tags:
+        - Plan
       responses:
         '200':
-          description: Plans retrieved
+          description: All plans retrieved successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Plan'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
+                  message:
+                    type: string
+                    example: All plans retrieved successfully
+  /api/plan/create:
     post:
-      summary: Create new plan
-      tags: [Plans]
-      security:
-        - BearerAuth: []
+      summary: Create a new plan
+      tags:
+        - Plan
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Plan'
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Beach Cleanup"
+                description:
+                  type: string
+                  example: "A plan to clean the local beach."
+                startDate:
+                  type: string
+                  format: date-time
+                  example: "2024-08-01T09:00:00.000Z"
+                endDate:
+                  type: string
+                  format: date-time
+                  example: "2024-08-01T17:00:00.000Z"
+                volunteerNumber:
+                  type: integer
+                  example: 20
+                destinationId:
+                  type: string
+                  example: "destination-uuid"
+                category_id:
+                  type: string
+                  example: "category-uuid"
+                fees:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Fee'
+                totalFees:
+                  type: number
+                  example: 100
+                isPaid:
+                  type: boolean
+                  example: true
+              required:
+                - name
+                - description
+                - startDate
+                - endDate
+                - volunteerNumber
+                - destinationId
+                - category_id
+                - fees
+                - totalFees
+                - isPaid
       responses:
         '201':
-          description: Plan created
+          description: Plan created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Plan'
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Plan'
+                  message:
+                    type: string
+                    example: "Plan created successfully"
         '400':
-          description: Validation error
+          description: Validation failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Validation failed"
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
   /api/plan/category/{categoryName}:
     get:
       summary: Get plans by category name
-      tags: [Plans]
+      tags:
+        - Plan
       parameters:
         - in: path
           name: categoryName
@@ -520,19 +638,35 @@ paths:
             type: string
       responses:
         '200':
-          description: Plans retrieved
+          description: Plans for category retrieved successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Plan'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Plan'
+                  message:
+                    type: string
+                    example: Plans for category '{categoryName}' retrieved successfully
         '404':
-          description: Category not found
+          description: No plans found for category
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: No plans found for category
   /api/plan/filter:
     get:
       summary: Filter plans
@@ -574,7 +708,8 @@ paths:
   /api/plan/{id}:
     get:
       summary: Get plan by ID
-      tags: [Plans]
+      tags:
+        - Plan
       parameters:
         - in: path
           name: id
@@ -583,17 +718,33 @@ paths:
             type: string
       responses:
         '200':
-          description: Plan retrieved
+          description: Plan retrieved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Plan'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Plan'
+                  message:
+                    type: string
+                    example: Plan retrieved successfully
         '404':
           description: Plan not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Plan not found
     put:
       summary: Update plan (Association Owner only)
       tags: [Plans]
@@ -1001,7 +1152,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Association'
+                  $ref: '#/components/schemas/PendingAssociationUserWithAssociationData'
   /api/admin/associations/approve/{userId}:
     put:
       summary: Approve association

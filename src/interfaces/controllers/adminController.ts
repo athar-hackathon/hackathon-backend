@@ -16,32 +16,28 @@ export const getPendingAssociationsController = async (req: Request, res: Respon
     // 1. Find all users who are pending association owners
     const pendingOwners = await db.user.findAll({
       where: { isActive: false, role: "associationOwner" },
-      attributes: ["id", "name"]
+      attributes: [
+        "id", "email", "password", "name", "age", "gender", "country", "role", "city", "profilePicture"
+      ]
     });
 
-    // 2. For each user, find their association
-    const associations = await Promise.all(
+    // 2. For each user, find their association and format the response
+    const usersWithAssociation = await Promise.all(
       pendingOwners.map(async (user: any) => {
         const association = await db.association.findOne({
-          where: { owner_id: user.id }
+          where: { owner_id: user.id },
+          attributes: ["name", "description"]
         });
-        if (association) {
-          const data = association.get();
-          return {
-            ...data,
-            owner: { id: user.id, name: user.name }
-          };
-        }
-        return null;
+        return {
+          ...user.get(),
+          associationData: association ? association.get() : null
+        };
       })
     );
 
-    // Filter out users with no association
-    const result = associations.filter(a => a !== null);
-
     res.status(200).json({
       success: true,
-      data: result,
+      data: usersWithAssociation,
       message: "Pending associations retrieved successfully"
     });
   } catch (error) {
