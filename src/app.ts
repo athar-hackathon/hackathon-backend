@@ -5,6 +5,7 @@ import planRouter from './interfaces/routes/planRoutes';
 import adminRouter from './interfaces/routes/adminRoutes';
 import locationRouter from './interfaces/routes/locationRoutes';
 import reviewRouter from './interfaces/routes/reviewRoutes';
+import guestRouter from './interfaces/routes/guestRoutes';
 import { setupSwagger } from './infrastructure/swagger/swagger';
 import cors from "cors";
 import path from 'path';
@@ -48,5 +49,6 @@ app.use('/api/plan', planRouter);
 app.use('/api/location', locationRouter);
 app.use('/api', reviewRouter);
 app.use("/api/association", associationRoutes);
+app.use("/api/guest", guestRouter);
 
 export default app

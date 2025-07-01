@@ -155,7 +155,7 @@ export const getAllPlansController = async (
         if (userAssociations.length > 0) {
           const associationId = userAssociations[0].id;
           plans = await getAllPlans(PlanRepository)();
-          plans = plans.filter((plan: any) => plan.associationId === associationId);
+          plans = plans.filter((plan: any) => String(plan.associationId) === String(associationId));
         } else {
           plans = []; // No association found, return empty array
         }
